@@ -23,11 +23,15 @@ module.exports = {
     response: (req, res) => {
         // console.log(req.body);
         if (req.body.RESPCODE === "01") {
+            console.log("Paymend Done");
+            console.log(JSON.stringify(req.body));
             res.render("paytm/response", {
                 status: true,
                 result: JSON.stringify(req.body)
             });
         } else {
+            console.log("Paymend Failed");
+            console.log(JSON.stringify(req.body));
             res.render("paytm/response", {
                 status: false,
                 result: JSON.stringify(req.body)
