@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <form name="f1" id="myForm" method="POST" action="https://securegw-stage.paytm.in/theia/processTransaction">
+    <form name="f1" id="myForm" method="post" action="https://securegw-stage.paytm.in/theia/processTransaction">
         <% for (name in result) {
             %>
         <input type="hidden" name='<%= name %>' value='<%= result[name] %>' />
@@ -17,8 +17,7 @@
     </form>
 
     <script>
-        setTimeout(function() { document.f1.submit(); }, 5000)
-        
+        document.f1.submit();
     </script>
 </body>
 
