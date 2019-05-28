@@ -12,13 +12,35 @@ function init(router) {
         .get(successPayment);
 }
 
-paypal.configure({
+
+// first config for paypal
+let pratian_config = {
     mode: "sandbox", //sandbox or live
     client_id:
         "AQQxbjKbMaZv_0J4NLpFpAOMDSgMaEMolPe05AE9KEfEdNLoIGeYsttaqb4zmzzIAWu4CtZRj4RrKC9d",
     client_secret:
         "EO-OyPEV0idwNHEUtopXq-rzRXRDIZnLC16UlfDNIGgZHxixkqveP4Au_ZQQ9CYq0v5_nXy3mW3vp_kN"
-});
+};
+
+let second_config = {
+    'mode': 'sandbox',
+    'client_id': '<SECOND_CLIENT_ID>',
+    'client_secret': '<SECOND_CLIENT_SECRET>'
+};
+
+
+function getPaypalConfig(merchant_id) {
+    switch (merchant_id) {
+        case "P_01":
+            paypal.configure(pratian_config);
+            break;
+        case "P_02":
+            paypal.configure(second_config);
+            break;
+        default:
+            paypal.configure(pratian_config);
+    }
+}
 
 function getIndex(req, res) {
     let data = req.query;
@@ -26,34 +48,34 @@ function getIndex(req, res) {
 }
 
 function createPaypalPayment(req, res) {
-    let data = req.query;
+    getPaypalConfig(req.query.merchant_id);
     var create_payment_json = {
         intent: "sale",
         payer: {
             payment_method: "paypal"
         },
         redirect_urls: {
-            return_url: "http://172.30.13.126:3000/api/success",
-            cancel_url: "http://172.30.13.126:3000/api/cancel"
+            return_url: "http://172.30.13.227:3000/api/success",
+            cancel_url: "http://172.30.13.227:3000/api/cancel"
         },
         transactions: [
             {
                 item_list: {
                     items: [
                         {
-                            name: "item",
-                            sku: "item",
-                            price: "1.00",
-                            currency: "USD",
-                            quantity: 1
+                            name: req.query.item_name,
+                            sku: req.query.item_name,
+                            price: req.query.item_price,
+                            currency: req.query.currency,
+                            quantity: req.query.item_quantity
                         }
                     ]
                 },
                 amount: {
-                    currency: "USD",
-                    total: "1.00"
+                    currency: req.query.currency,
+                    total: req.query.item_price
                 },
-                description: "This is the payment description."
+                description: req.query.item_description
             }
         ]
     };
@@ -80,14 +102,14 @@ function successPayment(req, res) {
     var paymentId = req.query.paymentId;
     var execute_payment_json = {
         payer_id: PayerID,
-        transactions: [
-            {
-                amount: {
-                    currency: "USD",
-                    total: "1.00"
-                }
-            }
-        ]
+        // transactions: [
+        //     {
+        //         amount: {
+        //             currency: "USD",
+        //             total: "1.00"
+        //         }
+        //     }
+        //]
     };
 
     paypal.payment.execute(paymentId, execute_payment_json, function (

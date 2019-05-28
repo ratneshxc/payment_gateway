@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <title><%= data %></title>
-    </head>
-    <body style="padding: 100px; width:100%">
-        <!-- <h1>Paypal</h1> -->
-        <h1>Please wait...</h1>
-        <form name="f1" action="paypal">
-            <input type="hidden" id="ORDER_ID" name="ORDER_ID" value='' />
-            <input type="hidden" id="INDUSTRY_TYPE_ID" name="INDUSTRY_TYPE_ID" value="" />
-            <input type="hidden" id="CUST_ID" name="CUST_ID" value='' />
-            <input type="hidden" id="CHANNEL_ID" name="CHANNEL_ID" value='WEB' />
-            <input type="hidden" id="TXN_AMOUNT" name="TXN_AMOUNT" value='' />
-            <input type="hidden" id="WEBSITE" name="WEBSITE" value="WEBSTAGING" />
-            <input type="hidden" id="MID" name="MID" value="" />
-            <input type="hidden" id="PAYTM_MERCHANT_KEY" name="PAYTM_MERCHANT_KEY" value="" />
-            <button style="width:80px; height:30px" type="submit">Pay</button>
-        </form>
-    </body>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title><%= data %></title>
+</head>
+
+<body style="padding: 100px; width:100%">
+    <!-- <h1>Paypal</h1> -->
+    <h1>Please wait...</h1>
+    <form name="f1" action="paypal">
+        <input type="text" id="merchant_id" name="merchant_id" placeholder="merchant_id" value='P_01' />
+        <input type="text" id="item_name" name="item_name" placeholder="item_name" value='' />
+        <input type="text" id="item_price" name="item_price" placeholder="item_price" value="" />
+        <input type="text" id="currency" name="currency" placeholder="currency" value='' />
+        <input type="text" id="item_quantity" name="item_quantity" placeholder="item_quantity" value='' />
+        <input type="text" id="item_description" name="item_description" placeholder="item_description" value='' />
+        <button style="width:80px; height:30px" type="submit">Pay</button>
+    </form>
+</body>
+
 </html>

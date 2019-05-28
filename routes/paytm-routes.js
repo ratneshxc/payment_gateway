@@ -2,18 +2,24 @@
 var checksum = require("../defaultConfig/checksum");
 
 function init(router) {
-    router.route('/request')
-        .get(getRequest)
-    router.route('/request/post')
-        .get(request)
-    router.route('/response')
-        .post(response)
+    // router.route('/request')
+    //     .get(getRequest)
+    //     //.post(request)
+    // router.route('/request/post')
+    //     .get(request)
+    // router.route('/response')
+    //     .post(response)
+
+        router.get("/request", getRequest);
+        router.get("/requestPost", request);
+        router.post("/response", response);
 
 }
 
 function getRequest(req, res) {
     res.render("paytm/index");
 }
+
 function request(req, res) {
     var paramlist = req.query;
     var paramarray = new Array();
@@ -24,10 +30,10 @@ function request(req, res) {
             paramarray[name] = paramlist[name];
         }
     }
-    paramarray["CALLBACK_URL"] = "http://localhost:3000/api/response";
+    paramarray["CALLBACK_URL"] = "http://172.30.13.227:3000/api/response";
     checksum.genchecksum(paramarray, PAYTM_MERCHANT_KEY, (err, result) => {
         if (err) throw err;
-        res.render("paytm/request", { result });
+        res.render("paytm/request", { result: result });
     });
 }
 
