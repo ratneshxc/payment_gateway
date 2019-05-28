@@ -55,8 +55,8 @@ function createPaypalPayment(req, res) {
             payment_method: "paypal"
         },
         redirect_urls: {
-            return_url: "https://paytmgateways.herokuapp.com:3000/api/success",
-            cancel_url: "https://paytmgateways.herokuapp.com:3000/api/cancel"
+            return_url: "https://paytmgateways.herokuapp.com/api/success",
+            cancel_url: "https://paytmgateways.herokuapp.com/api/cancel"
         },
         transactions: [
             {
