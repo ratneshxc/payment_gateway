@@ -20,10 +20,10 @@ paytmRoute.init(Router);
 
 // Router.use("/paytm",require("./app/routes/paytm.routes"));
 
-// app.use(
-//     "/api",
-//     require("./route-groups")
-// );
+app.use(
+    "/api",
+    require("./route-groups")
+);
 app.listen(process.env.PORT || 3000, function () {
     console.log("Server is running");
 });
