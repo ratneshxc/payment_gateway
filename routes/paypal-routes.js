@@ -47,8 +47,8 @@ function getIndex(req, res) {
     res.render("index", { data: JSON.stringify({ "state": "index" }) });
 }
 
-function createPaypalPayment(req, res) {
-    getPaypalConfig(req.query.merchant_id);
+async function createPaypalPayment(req, res) {
+    await getPaypalConfig(req.query.merchant_id);
     var create_payment_json = {
         intent: "sale",
         payer: {
@@ -80,7 +80,7 @@ function createPaypalPayment(req, res) {
         ]
     };
 
-    paypal.payment.create(create_payment_json, function (error, payment) {
+   await paypal.payment.create(create_payment_json, function (error, payment) {
         if (error) {
             console.log("error-paypal", error);
             //throw error;
@@ -117,14 +117,14 @@ function successPayment(req, res) {
         error,
         payment
     ) {
-        if (error) {
-            console.log(error.response);
-            throw error;
-        } else {
-            console.log("Get Payment Response");
-            console.log(JSON.stringify(payment));
-            res.render("success", { data: JSON.stringify(payment) });
-        }
+            if (error) {
+                console.log(error.response);
+                throw error;
+            } else {
+                console.log("Get Payment Response");
+                console.log(JSON.stringify(payment));
+                res.render("success", { data: JSON.stringify(payment) });
+            }
     });
 }
 
