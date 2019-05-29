@@ -18,8 +18,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 paypalRoute.init(Router);
 paytmRoute.init(Router);
 
-// Router.use("/paytm",require("./app/routes/paytm.routes"));
-
 app.use(
     "/api",
     require("./route-groups")
