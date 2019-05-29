@@ -30,7 +30,7 @@ function request(req, res) {
             paramarray[name] = paramlist[name];
         }
     }
-    paramarray["CALLBACK_URL"] = "http://localhost:3000/api/response";
+    paramarray["CALLBACK_URL"] = "https://pratiangateway.herokuapp.com/api/response";
     checksum.genchecksum(paramarray, PAYTM_MERCHANT_KEY, (err, result) => {
         if (err) throw err;
         res.render("paytm/request", { result: result });

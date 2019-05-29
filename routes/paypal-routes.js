@@ -55,8 +55,8 @@ async function createPaypalPayment(req, res) {
             payment_method: "paypal"
         },
         redirect_urls: {
-            return_url: "http://localhost:3000/api/success",
-            cancel_url: "http://localhost:3000/api/cancel"
+            return_url: "https://pratiangateway.herokuapp.com/api/success",
+            cancel_url: "https://pratiangateway.herokuapp.com/api/cancel"
         },
         transactions: [
             {
