@@ -24,8 +24,8 @@ let pratian_config = {
 
 let second_config = {
     'mode': 'sandbox',
-    'client_id': '<SECOND_CLIENT_ID>',
-    'client_secret': '<SECOND_CLIENT_SECRET>'
+    'client_id': 'AcXY99JKy-lM8uuRzCfr9NZaOAEqQxrFs-Xyyl0aa8zzqiFd8KT95BnYl3IDIalS_1EzFvfpEVDNuQ35',
+    'client_secret': 'EHzRSxERHCg_U0p7dAUNGbu2nQLcIsv7W7t9adHWGiuGZ8Xeou-tl4sR0eN8rnLD5dR7osBTrQUEsFcT'
 };
 
 
@@ -55,8 +55,8 @@ function createPaypalPayment(req, res) {
             payment_method: "paypal"
         },
         redirect_urls: {
-            return_url: "http://localhost:3000/api/success",
-            cancel_url: "http://localhost:3000/api/cancel"
+            return_url: "http://172.30.13.227:3000/api/success",
+            cancel_url: "http://172.30.13.227:3000/api/cancel"
         },
         transactions: [
             {
@@ -82,7 +82,8 @@ function createPaypalPayment(req, res) {
 
     paypal.payment.create(create_payment_json, function (error, payment) {
         if (error) {
-            throw error;
+            console.log("error-paypal", error);
+            //throw error;
         } else {
             console.log("Create Payment Response");
             console.log(payment);
