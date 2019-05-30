@@ -12,51 +12,45 @@ function init(router) {
         .get(successPayment);
 }
 
-
-// first config for paypal
-let pratian_config = {
-    mode: "sandbox", //sandbox or live
-    client_id:
-        "AQQxbjKbMaZv_0J4NLpFpAOMDSgMaEMolPe05AE9KEfEdNLoIGeYsttaqb4zmzzIAWu4CtZRj4RrKC9d",
-    client_secret:
-        "EO-OyPEV0idwNHEUtopXq-rzRXRDIZnLC16UlfDNIGgZHxixkqveP4Au_ZQQ9CYq0v5_nXy3mW3vp_kN"
-};
-
-let second_config = {
-    'mode': 'sandbox',
-    'client_id': 'AcXY99JKy-lM8uuRzCfr9NZaOAEqQxrFs-Xyyl0aa8zzqiFd8KT95BnYl3IDIalS_1EzFvfpEVDNuQ35',
-    'client_secret': 'EHzRSxERHCg_U0p7dAUNGbu2nQLcIsv7W7t9adHWGiuGZ8Xeou-tl4sR0eN8rnLD5dR7osBTrQUEsFcT'
-};
-
-
 function getPaypalConfig(merchant_id) {
     switch (merchant_id) {
         case "P_01":
-            paypal.configure(pratian_config);
+            paypal.configure({
+                "mode": "sandbox", //sandbox or live
+                "client_id": "AQQxbjKbMaZv_0J4NLpFpAOMDSgMaEMolPe05AE9KEfEdNLoIGeYsttaqb4zmzzIAWu4CtZRj4RrKC9d",
+                "client_secret": "EO-OyPEV0idwNHEUtopXq-rzRXRDIZnLC16UlfDNIGgZHxixkqveP4Au_ZQQ9CYq0v5_nXy3mW3vp_kN"
+            });
             break;
         case "P_02":
-            paypal.configure(second_config);
+            paypal.configure({
+                'mode': 'sandbox',
+                'client_id': 'AcXY99JKy-lM8uuRzCfr9NZaOAEqQxrFs-Xyyl0aa8zzqiFd8KT95BnYl3IDIalS_1EzFvfpEVDNuQ35',
+                'client_secret': 'EHzRSxERHCg_U0p7dAUNGbu2nQLcIsv7W7t9adHWGiuGZ8Xeou-tl4sR0eN8rnLD5dR7osBTrQUEsFcT'
+            });
             break;
         default:
-            paypal.configure(pratian_config);
+            paypal.configure({
+                "mode": "sandbox", //sandbox or live
+                "client_id": "AQQxbjKbMaZv_0J4NLpFpAOMDSgMaEMolPe05AE9KEfEdNLoIGeYsttaqb4zmzzIAWu4CtZRj4RrKC9d",
+                "client_secret": "EO-OyPEV0idwNHEUtopXq-rzRXRDIZnLC16UlfDNIGgZHxixkqveP4Au_ZQQ9CYq0v5_nXy3mW3vp_kN"
+            });
     }
 }
 
 function getIndex(req, res) {
-    let data = req.query;
     res.render("index", { data: JSON.stringify({ "state": "index" }) });
 }
 
-async function createPaypalPayment(req, res) {
+function createPaypalPayment(req, res) {
     await getPaypalConfig(req.query.merchant_id);
-    var create_payment_json = {
+    let create_payment_json = {
         intent: "sale",
         payer: {
             payment_method: "paypal"
         },
         redirect_urls: {
-            return_url: "http://localhost:3000/api/success",
-            cancel_url: "http://localhost:3000/api/cancel"
+            return_url: "http://172.30.13.227:3000/api/success",
+            cancel_url: "http://172.30.13.227:3000/api/cancel"
         },
         transactions: [
             {
@@ -64,7 +58,7 @@ async function createPaypalPayment(req, res) {
                     items: [
                         {
                             name: req.query.item_name,
-                            sku: req.query.item_name,
+                            sku: "item",
                             price: req.query.item_price,
                             currency: req.query.currency,
                             quantity: req.query.item_quantity
@@ -73,14 +67,19 @@ async function createPaypalPayment(req, res) {
                 },
                 amount: {
                     currency: req.query.currency,
-                    total: req.query.item_price
+                    total: req.query.item_price * req.query.item_quantity,
+                //     "details": {
+                //         "subtotal": subtotal,
+                //         "tax": tax,
+                //         "shipping": shipping,
+                //   }
                 },
                 description: req.query.item_description
+                //invoice_number: req.query.merchant_id
             }
         ]
     };
-
-   await paypal.payment.create(create_payment_json, function (error, payment) {
+    paypal.payment.create(create_payment_json, function (error, payment) {
         if (error) {
             console.log("error-paypal", error);
             //throw error;
@@ -117,14 +116,14 @@ function successPayment(req, res) {
         error,
         payment
     ) {
-            if (error) {
-                console.log(error.response);
-                throw error;
-            } else {
-                console.log("Get Payment Response");
-                console.log(JSON.stringify(payment));
-                res.render("success", { data: JSON.stringify(payment) });
-            }
+        if (error) {
+            console.log(error.response);
+            //throw error;
+        } else {
+            console.log("Get Payment Response");
+            console.log(JSON.stringify(payment));
+            res.render("success", { data: JSON.stringify(payment) });
+        }
     });
 }
 
