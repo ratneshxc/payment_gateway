@@ -42,7 +42,7 @@ function getIndex(req, res) {
 }
 
 function createPaypalPayment(req, res) {
-    await getPaypalConfig(req.query.merchant_id);
+    getPaypalConfig(req.query.merchant_id);
     let create_payment_json = {
         intent: "sale",
         payer: {
